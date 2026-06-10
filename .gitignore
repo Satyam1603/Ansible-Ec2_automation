@@ -1,0 +1,9 @@
+# Ansible Vault password
+vault.pass
+
+# Encrypted AWS secrets
+group_vars/all/aws_secrets.yml
+
+# SSH keys
+*.pem
+
