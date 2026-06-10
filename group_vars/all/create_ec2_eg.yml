@@ -1,0 +1,29 @@
+---
+- name: Create EC2 Instances
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - group_vars/all/aws_secrets.yml
+
+  tasks:
+    - name: Launch EC2 instances
+      amazon.aws.ec2_instance:
+        name: "{{ item.name }}"
+        key_name: satyam-aws-keypair
+        instance_type: t2.micro
+        security_group: default
+        region: ap-south-1
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        network:
+          assign_public_ip: true
+        image_id: "{{ item.image }}"
+        state: present
+        tags:
+          Name: "{{ item.name }}"
+      loop:
+        - { image: "ami-0db56f446d44f2f09", name: "node-1" }
+        - { image: "ami-0db56f446d44f2f09", name: "node-2" }
+        - { image: "ami-07a00cf47dbbc844c", name: "node-3" }
